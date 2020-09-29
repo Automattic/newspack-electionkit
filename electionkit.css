@@ -1,0 +1,96 @@
+.newspack-electionkit #ek-address {
+  width: 50%;
+}
+
+.newspack-electionkit .address-form {
+  margin-bottom: 16px;
+}
+
+.newspack-electionkit .sample-ballot {
+  margin-top: 2rem;
+}
+
+.newspack-electionkit .district-type {
+  background-color: blue;
+  color: white;
+  padding: 0.5rem;
+}
+
+.newspack-electionkit .race .race-name {
+  color: red;
+  padding-bottom: 0.25rem;
+  font-weight: bold;
+  font-size: 32px;
+  margin-bottom: 24px;
+}
+
+.newspack-electionkit .race .race-name .office-position {
+  font-size: 18px;
+}
+
+.newspack-electionkit .candidate,
+.newspack-electionkit .district,
+.newspack-electionkit .race {
+  clear: both;
+}
+
+.newspack-electionkit .candidate .candidate-content,
+.newspack-electionkit .candidate .candidate-image {
+  float: left;
+}
+
+.newspack-electionkit .candidate .candidate-image {
+  width: 100px;
+  margin-right: 16px;
+}
+
+.newspack-electionkit .candidate .candidate-content {
+  width: calc(100% - 116px);
+}
+
+.newspack-electionkit .district-type {
+  font-weight: bold;
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.newspack-electionkit .race-name {
+
+}
+
+.newspack-electionkit .entry-content .candidate-name a {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.newspack-electionkit .candidate {
+  margin-bottom: 16px;
+}
+
+.newspack-electionkit .clearfix {
+  overflow: auto;
+}
+
+.newspack-electionkit .clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.newspack-electionkit .spinner {
+  display: none;
+}
+
+.newspack-electionkit .spinner.is-active {
+  display: block;
+}
+
+.newspack-electionkit .ek-error {
+  color: red;
+  display: none;
+}
+
+.newspack-electionkit .ek-error.is-active {
+  display: block;
+}
