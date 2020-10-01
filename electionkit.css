@@ -112,6 +112,7 @@
 
 .newspack-electionkit .social a {
   display: inline-block;
+  margin-right: 0.25em;
   text-decoration: none;
 }
 
