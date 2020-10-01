@@ -238,7 +238,7 @@ function np_sample_ballot(){
 													<a href="<?php echo $candidate->person->contact_facebook ?>" target="_blank">Facebook</a>
 												<?php } ?>
 												<?php if ($candidate->person->contact_twitter) { ?>
-													<a href="<?php echo $candidate->person->contact_twitter ?>" target="_blank">Twitter</a>
+													<a href="https://twitter.com/<?php echo $candidate->person->contact_twitter ?>" target="_blank">Twitter</a>
 												<?php } ?>
 											</div>
 										</div>
