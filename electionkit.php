@@ -24,14 +24,15 @@ function np_sample_ballot_form($atts) {
 	<div class="newspack-electionkit">
 		<form class="address-form">
 			<input type="hidden" id="ea-show-bio" name="ea-show-bio" value="<?php echo $a['show_bios']; ?>">
-			<label for="ek-address">Enter your address where you're registered to vote:</label>
+			<label for="ek-address">Enter the address where you're registered to vote:</label>
 			<span>
 				<input type="text" id="ek-address" name="ea-address" value="<?php echo $a['debug_location']; ?>" required>
 				<input type="submit" value="Submit">
 			</span>
 		</form>
+		<div class="ek-credit">This sample ballot tool originated as a project of <a href="https://www.thechicagoreporter.com" target="_blank">The Chicago Reporter</a> and is provided with support from <a href="https://newspack.pub/" target="_blank">NewsPack</a> and the <a href="https://www.americanpressinstitute.org/" target="_blank">American Press Institute</a>. Candidate data is sourced from <a href="https://ballotpedia.org/Main_Page" target="_blank">Ballotpedia</a>.</div>
 		<div class="spinner"><img src="<?php echo plugin_dir_url( __FILE__ ) . "img/25.gif"; ?>"></div>
-		<div class="ek-error">There was an error with the sample ballot tool.  Please try again.</div>
+		<div class="ek-error">There was an error retrieving the sample ballot.  Please try again later.</div>
 		<div class="sample-ballot"></div>
 	</div>
 
