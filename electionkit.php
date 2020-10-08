@@ -65,7 +65,7 @@ function np_sample_ballot() {
 	$bp_sample_ballot_results   = 'https://api4.ballotpedia.org/myvote_results';
 	$response                   = array();
 
-	$address = ! empty( $_REQUEST['address'] ) ? $_REQUEST['address'] : null; //phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+	$address = ! empty( $_REQUEST['address'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['address'] ) ) : null; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 	$google_compose_url = $google_maps_api_url . '?' . http_build_query(
 		array(
@@ -76,7 +76,7 @@ function np_sample_ballot() {
 
 	$show_bios = ! empty( $_REQUEST['show_bios'] ) && 'true' === $_REQUEST['show_bios']; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-	$google_request = wp_remote_get( $google_compose_url ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_remote_get_wp_remote_get
+	$google_request = wp_safe_remote_get( $google_compose_url );
 	$google_data    = '';
 
 	if ( is_wp_error( $google_request ) ) {
@@ -119,7 +119,7 @@ function np_sample_ballot() {
 		)
 	);
 
-	$bp_districts_request = wp_remote_get( $bp_compose_url ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_remote_get_wp_remote_get
+	$bp_districts_request = wp_safe_remote_get( $bp_compose_url );
 	$bp_district_data     = '';
 	$bp_district_array    = [];
 
@@ -154,7 +154,7 @@ function np_sample_ballot() {
 		)
 	);
 
-	$bp_ballot_request = wp_remote_get( $bp_compose_url ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_remote_get_wp_remote_get
+	$bp_ballot_request = wp_safe_remote_get( $bp_compose_url );
 	$bp_ballot_data    = '';
 
 	if ( is_wp_error( $bp_ballot_request ) ) {
