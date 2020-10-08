@@ -72,7 +72,7 @@ function np_sample_ballot() {
 
 	$show_bios = ! empty( $_REQUEST['show_bios'] ) && 'true' === $_REQUEST['show_bios']; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-	$google_request = wp_remote_get( $google_compose_url ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_remote_get_wp_remote_get
+	$google_request = wp_safe_remote_get( $google_compose_url );
 	$google_data    = '';
 
 	if ( is_wp_error( $google_request ) ) {
@@ -115,7 +115,7 @@ function np_sample_ballot() {
 		)
 	);
 
-	$bp_districts_request = wp_remote_get( $bp_compose_url ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_remote_get_wp_remote_get
+	$bp_districts_request = wp_safe_remote_get( $bp_compose_url );
 	$bp_district_data     = '';
 	$bp_district_array    = [];
 
@@ -150,7 +150,7 @@ function np_sample_ballot() {
 		)
 	);
 
-	$bp_ballot_request = wp_remote_get( $bp_compose_url ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_remote_get_wp_remote_get
+	$bp_ballot_request = wp_safe_remote_get( $bp_compose_url );
 	$bp_ballot_data    = '';
 
 	if ( is_wp_error( $bp_ballot_request ) ) {
