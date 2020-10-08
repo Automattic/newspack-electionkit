@@ -61,7 +61,7 @@ function np_sample_ballot() {
 	$bp_sample_ballot_results   = 'https://api4.ballotpedia.org/myvote_results';
 	$response                   = array();
 
-	$address = ! empty( $_REQUEST['address'] ) ? $_REQUEST['address'] : null; //phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+	$address = ! empty( $_REQUEST['address'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['address'] ) ) : null; //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 	$google_compose_url = $google_maps_api_url . '?' . http_build_query(
 		array(
