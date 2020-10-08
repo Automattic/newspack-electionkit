@@ -55,11 +55,19 @@ add_action( 'wp_ajax_nopriv_sample_ballot', 'np_sample_ballot' );
  */
 function np_sample_ballot() {
 	$election_date              = '2020-11-03';
-	$google_api_key             = 'AIzaSyAc3rE7u30SEGhbDo8qVoV-k-UaV0hgVI4';
+	$google_api_key             = defined( 'NEWSPACK_ELECTIONKIT_GOOGLE_API_KEY' ) ? NEWSPACK_ELECTIONKIT_GOOGLE_API_KEY : null;
 	$google_maps_api_url        = 'https://maps.googleapis.com/maps/api/geocode/json';
 	$bp_sample_ballot_elections = 'https://api4.ballotpedia.org/sample_ballot_elections';
 	$bp_sample_ballot_results   = 'https://api4.ballotpedia.org/myvote_results';
 	$response                   = array();
+
+	if ( ! $google_api_key ) {
+		wp_send_json_error(
+			array(
+				'message' => __( 'No Google API key. Please add to wp-config file as described in plugin README.', 'newspack-electionkit' ),
+			)
+		);
+	}
 
 	$address = ! empty( $_REQUEST['address'] ) ? $_REQUEST['address'] : null; //phpcs:ignore WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 

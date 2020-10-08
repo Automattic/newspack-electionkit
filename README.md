@@ -7,6 +7,14 @@ Install using a shortcode ```[sample_ballot]```
 
 Has a dependency on Google API key for address.  Later versions will make it a WordPress option.
 
+## API Keys:
+
+This plugin requires a valid Google Maps API key. Please add a line to `wp-config.php` providing this key, as follows:
+
+```
+define( 'NEWSPACK_ELECTIONKIT_GOOGLE_API_KEY', 'YOUR-GOOGLE-API-KEY' );
+```
+
 ## Development
 
 Run `composer update && npm install`.
