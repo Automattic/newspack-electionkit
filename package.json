@@ -86,7 +86,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Automattic/newspack-electionkitgit"
+    "url": "git+https://github.com/Automattic/newspack-electionkit.git"
   },
   "license": "GPL-2.0-or-later",
   "bugs": {
