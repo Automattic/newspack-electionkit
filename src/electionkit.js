@@ -2,7 +2,7 @@ import './electionkit.scss';
 
 ( $ => {
 	$( document ).ready( function() {
-		const ajax_object = window.ajax_object;
+		const { ajax_object } = window;
 		const $sampleBallot = $( '.newspack-electionkit .sample-ballot' );
 		const $spinner = $( '.newspack-electionkit .spinner' );
 		const $errorState = $( '.newspack-electionkit .ek-error' );
@@ -20,6 +20,7 @@ import './electionkit.scss';
 					show_bios: $( '.newspack-electionkit #ek-show-bio' ).val(),
 				},
 				beforeSend() {
+					$sampleBallot.fadeOut();
 					$spinner.toggleClass( 'is-active' );
 					$errorState.removeClass( 'is-active' );
 				},
@@ -29,6 +30,7 @@ import './electionkit.scss';
 					if ( response.success === true ) {
 						if ( response.data.ballot !== '' ) {
 							$sampleBallot.html( response.data.ballot );
+							$sampleBallot.show();
 						} else {
 							$errorState.toggleClass( 'is-active' );
 						}
