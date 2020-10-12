@@ -71,7 +71,7 @@ class Newspack_Electionkit_Settings {
 		);
 		add_settings_field(
 			'newspack_electionkit_google_api_key',
-			__( 'Google Maps Geocoding API Key', 'newspack-electionkit' ),
+			__( 'Google Maps', 'newspack-electionkit' ),
 			[ __CLASS__, 'newspack_electionkit_google_api_key_callback' ],
 			'newspack-electionkit-settings-admin',
 			'newspack_electionkit_settings'
@@ -84,8 +84,9 @@ class Newspack_Electionkit_Settings {
 	public static function newspack_electionkit_google_api_key_callback() {
 		$newspack_electionkit_google_api_key = get_option( 'newspack_electionkit_google_api_key', false );
 		printf(
-			'<input type="text" id="newspack_electionkit_google_api_key" name="newspack_electionkit_google_api_key" value="%s" />',
-			esc_attr( $newspack_electionkit_google_api_key )
+			'<input type="text" id="newspack_electionkit_google_api_key" aria-describedby="newspack_electionkit_google_api_key-description" name="newspack_electionkit_google_api_key" value="%s" class="regular-text" /><p class="description" id="newspack_electionkit_google_api_key-description">%s</p>',
+			esc_attr( $newspack_electionkit_google_api_key ),
+			wp_kses_post( 'This plugin requires a valid Google Maps Geocoding API key. You can obtain one for free following the instructions from <a href="https://developers.google.com/maps/documentation/geocoding/start" target="_blank">Google here</a>.' )
 		);
 	}
 }
