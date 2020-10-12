@@ -21,6 +21,9 @@ class Newspack_Electionkit_Settings {
 	public static function init() {
 		add_action( 'admin_menu', [ __CLASS__, 'add_plugin_page' ] );
 		add_action( 'admin_init', [ __CLASS__, 'page_init' ] );
+		if ( ! get_option( 'newspack_electionkit_google_api_key', null ) ) {
+			add_action( 'admin_notices', [ __CLASS__, 'activation_nag' ] );
+		}
 	}
 
 	/**
@@ -88,6 +91,25 @@ class Newspack_Electionkit_Settings {
 			esc_attr( $newspack_electionkit_google_api_key ),
 			wp_kses_post( 'This plugin requires a valid Google Maps Geocoding API key. You can obtain one for free following the instructions from <a href="https://developers.google.com/maps/documentation/geocoding/start" target="_blank">Google here</a>.' )
 		);
+	}
+
+	/**
+	 * Add admin notice if API key is unset.
+	 */
+	public static function activation_nag() {
+		$screen = get_current_screen();
+		?>
+		<div class="notice notice-warning">
+			<p>
+				<?php
+					echo wp_kses_post(
+							// translators: urge users to input their API credentials on settings page.
+						__( 'Newspack Election Kit requires a Google Maps Geocoding API Key to function. You can obtain one for free following the instructions from <a href="https://developers.google.com/maps/documentation/geocoding/start" target="_blank">Google here</a>. Then please <a href="options-general.php?page=newspack-electionkit-settings-admin">go to settings</a> to input your key.', 'newspack-electionkit' )
+					);
+				?>
+			</p>
+		</div>
+		<?php
 	}
 }
 
