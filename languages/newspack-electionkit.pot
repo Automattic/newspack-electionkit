@@ -1,0 +1,88 @@
+# Copyright (C) 2020 Will English IV
+# This file is distributed under the same license as the Newspack Election Kit plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Newspack Election Kit 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/newspack-electionkit\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2020-10-14T20:43:37+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.4.0\n"
+"X-Domain: newspack-electionkit\n"
+
+#. Plugin Name of the plugin
+msgid "Newspack Election Kit"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://willenglishiv.com/newspack-election-kit"
+msgstr ""
+
+#. Description of the plugin
+msgid "Provides a sample ballot for Newspack Customers.  Install on the page of your choice with the shortcode [sample_ballot]"
+msgstr ""
+
+#. Author of the plugin
+msgid "Will English IV"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://willenglishiv.com/"
+msgstr ""
+
+#: electionkit.php:32
+msgid "Enter the address where you're registered to vote:"
+msgstr ""
+
+#: electionkit.php:35
+msgid "Submit"
+msgstr ""
+
+#: electionkit.php:48
+msgid "This sample ballot tool originated as a project of <a href=\"https://www.thechicagoreporter.com\" target=\"_blank\">The Chicago Reporter</a> and is provided with support from <a href=\"https://newspack.pub/\" target=\"_blank\">Newspack</a> and the <a href=\"https://www.americanpressinstitute.org/\" target=\"_blank\">American Press Institute</a>. Candidate data is sourced from <a href=\"https://ballotpedia.org/Main_Page\" target=\"_blank\">Ballotpedia</a>."
+msgstr ""
+
+#: electionkit.php:54
+msgid "There was an error retrieving the sample ballot.  Please try again later."
+msgstr ""
+
+#: electionkit.php:78
+msgid "No Google API key. Please add to wp-config file as described in plugin README."
+msgstr ""
+
+#: electionkit.php:124
+msgid "Address did not return a valid US location."
+msgstr ""
+
+#: electionkit.php:144
+msgid "Ballotpedia sample ballot elections call didn't work."
+msgstr ""
+
+#: electionkit.php:156
+msgid "Ballotpedia sample ballot elections didn't return any data."
+msgstr ""
+
+#: electionkit.php:178
+msgid "Ballotpedia sample ballot results call didn't work."
+msgstr ""
+
+#: electionkit.php:191
+msgid "Ballotpedia sample ballot results didn't return any data."
+msgstr ""
+
+#: electionkit.php:246
+#: electionkit.php:361
+msgid "Ballot Measures"
+msgstr ""
+
+#: electionkit.php:328
+msgid "Facebook"
+msgstr ""
+
+#: electionkit.php:340
+msgid "Twitter"
+msgstr ""
