@@ -65,8 +65,9 @@ add_shortcode( 'sample_ballot', 'np_sample_ballot_form' );
  * Generate sample ballot.
  */
 function np_sample_ballot() {
+	$google_maps_api_url_legacy = defined( 'NEWSPACK_ELECTIONKIT_GOOGLE_API_KEY' ) ? NEWSPACK_ELECTIONKIT_GOOGLE_API_KEY : null;
 	$election_date              = '2020-11-03';
-	$google_api_key             = defined( 'NEWSPACK_ELECTIONKIT_GOOGLE_API_KEY' ) ? NEWSPACK_ELECTIONKIT_GOOGLE_API_KEY : null;
+	$google_api_key             = get_option( 'newspack_electionkit_google_api_key', $google_maps_api_url_legacy );
 	$google_maps_api_url        = 'https://maps.googleapis.com/maps/api/geocode/json';
 	$bp_sample_ballot_elections = 'https://api4.ballotpedia.org/sample_ballot_elections';
 	$bp_sample_ballot_results   = 'https://api4.ballotpedia.org/myvote_results';
@@ -401,3 +402,8 @@ function np_electionkit_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'np_electionkit_scripts' );
 
+
+
+if ( ! class_exists( 'Newspack_Electionkit_Settings' ) ) {
+	include_once dirname( __FILE__ ) . '/includes/class-newspack-electionkit-settings.php';
+}
