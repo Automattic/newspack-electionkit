@@ -1,13 +1,14 @@
 <?php
 /**
- * Plugin Name: NewsPack Election Kit
+ * Plugin Name: Newspack Election Kit
  * Plugin URI: https://willenglishiv.com/newspack-election-kit
- * Description: Provides a sample ballot for NewsPack Customers.  Install on the page of your choice with the shortcode [sample_ballot]
+ * Description: Provides a sample ballot for Newspack Customers.  Install on the page of your choice with the shortcode [sample_ballot]
  * Author: Will English IV
  * Author URI: https://willenglishiv.com/
  * Version: 1.0.0
+ * Text Domain: newspack-electionkit
  *
- * @package NewsPack Election Kit
+ * @package Newspack Election Kit
  * @version 1.0.0
  */
 
@@ -32,12 +33,22 @@ function np_sample_ballot_form( $atts ) {
 			<label for="ek-address"><?php esc_html_e( "Enter the address where you're registered to vote:", 'newspack-electionkit' ); ?></label>
 			<span>
 				<input type="text" id="ek-address" name="ek-address" value="<?php echo esc_attr( $a['debug_location'] ); ?>" required>
-				<input type="submit" value="<?php esc_attr_e( 'Submit' ); ?>">
+				<input type="submit" value="<?php esc_attr_e( 'Submit', 'newspack-electionkit' ); ?>">
 			</span>
 		</form>
 		<div class="ek-credit">
 			<?php
-				_e( 'This sample ballot tool originated as a project of <a href="https://www.thechicagoreporter.com" target="_blank">The Chicago Reporter</a> and is provided with support from <a href="https://newspack.pub/" target="_blank">Newspack</a> and the <a href="https://www.americanpressinstitute.org/" target="_blank">American Press Institute</a>. Candidate data is sourced from <a href="https://ballotpedia.org/Main_Page" target="_blank">Ballotpedia</a>.', 'newspack-electionkit' );
+				$credit_allowed_html = array(
+					'a' => array(
+						'href'   => array(),
+						'target' => array(),
+					),
+				);
+
+				echo wp_kses(
+					__( 'This sample ballot tool originated as a project of <a href="https://www.thechicagoreporter.com" target="_blank">The Chicago Reporter</a> and is provided with support from <a href="https://newspack.pub/" target="_blank">Newspack</a> and the <a href="https://www.americanpressinstitute.org/" target="_blank">American Press Institute</a>. Candidate data is sourced from <a href="https://ballotpedia.org/Main_Page" target="_blank">Ballotpedia</a>.', 'newspack-electionkit' ),
+					$credit_allowed_html
+				);
 			?>
 		</div>
 		<div class="spinner"><img alt="spinner" src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . 'img/25.gif' ); ?>"></div>
@@ -54,18 +65,33 @@ add_shortcode( 'sample_ballot', 'np_sample_ballot_form' );
  * Generate sample ballot.
  */
 function np_sample_ballot() {
+	$google_maps_api_url_legacy = defined( 'NEWSPACK_ELECTIONKIT_GOOGLE_API_KEY' ) ? NEWSPACK_ELECTIONKIT_GOOGLE_API_KEY : null;
 	$election_date              = '2020-11-03';
-	$google_api_key             = defined( 'NEWSPACK_ELECTIONKIT_GOOGLE_API_KEY' ) ? NEWSPACK_ELECTIONKIT_GOOGLE_API_KEY : null;
+	$google_api_key             = get_option( 'newspack_electionkit_google_api_key', $google_maps_api_url_legacy );
 	$google_maps_api_url        = 'https://maps.googleapis.com/maps/api/geocode/json';
-	$bp_sample_ballot_elections = 'https://api4.ballotpedia.org/sample_ballot_elections';
+	$bp_sample_ballot_elections = 'https://api4.ballotpedia.org/myvote_elections';
 	$bp_sample_ballot_results   = 'https://api4.ballotpedia.org/myvote_results';
 	$response                   = array();
 	$ballot_measures_on_top     = false;
+	$ballotpedia_api_key        = get_option( 'newspack_electionkit_ballotpedia_api_key', false );
+	$bp_request_headers         = array(
+		'headers' => array(
+			'x-api-key' => $ballotpedia_api_key,
+		),
+	);
 
 	if ( ! $google_api_key ) {
 		wp_send_json_error(
 			array(
-				'message' => __( 'No Google API key. Please add to wp-config file as described in plugin README.', 'newspack-electionkit' ),
+				'message' => esc_html__( 'No Google API key. Please add to Settings->Election Kit in wp-admin as described in plugin README.', 'newspack-electionkit' ),
+			)
+		);
+	}
+
+	if ( ! $ballotpedia_api_key ) {
+		wp_send_json_error(
+			array(
+				'message' => esc_html__( 'No Ballotpedia API key. Please add to Settings->Election Kit in wp-admin as described in plugin README.', 'newspack-electionkit' ),
 			)
 		);
 	}
@@ -111,7 +137,7 @@ function np_sample_ballot() {
 	if ( ! $in_the_united_states ) {
 		wp_send_json_error(
 			array(
-				'message'        => __( 'Address did not return a valid US location.', 'newspack-electionkit' ),
+				'message'        => esc_html__( 'Address did not return a valid US location.', 'newspack-electionkit' ),
 				'locationResult' => $location_result,
 			)
 		);
@@ -124,14 +150,14 @@ function np_sample_ballot() {
 		)
 	);
 
-	$bp_districts_request = wp_safe_remote_get( $bp_compose_url );
+	$bp_districts_request = wp_safe_remote_get( $bp_compose_url, $bp_request_headers );
 	$bp_district_data     = '';
 	$bp_district_array    = array();
 
 	if ( is_wp_error( $bp_districts_request ) ) {
 		wp_send_json_error(
 			array(
-				'message' => __( "Ballotpedia sample ballot elections call didn't work.", 'newspack-electionkit' ),
+				'message' => esc_html__( "Ballotpedia sample ballot elections call didn't work.", 'newspack-electionkit' ),
 			)
 		);
 	} else {
@@ -140,10 +166,10 @@ function np_sample_ballot() {
 		);
 	}
 
-	if ( ! $bp_district_data ) {
+	if ( ! $bp_district_data || ! $bp_district_data->success ) {
 		wp_send_json_error(
 			array(
-				'message' => __( "Ballotpedia sample ballot elections didn't return any data.", 'newspack-electionkit' ),
+				'message' => esc_html__( "Ballotpedia sample ballot elections didn't return any data.", 'newspack-electionkit' ),
 			)
 		);
 	}
@@ -159,13 +185,13 @@ function np_sample_ballot() {
 		)
 	);
 
-	$bp_ballot_request = wp_safe_remote_get( $bp_compose_url );
+	$bp_ballot_request = wp_safe_remote_get( $bp_compose_url, $bp_request_headers );
 	$bp_ballot_data    = '';
 
 	if ( is_wp_error( $bp_ballot_request ) ) {
 		wp_send_json_error(
 			array(
-				'message'     => __( "Ballotpedia sample ballot results call didn't work.", 'newspack-electionkit' ),
+				'message'     => esc_html__( "Ballotpedia sample ballot results call didn't work.", 'newspack-electionkit' ),
 				'information' => $bp_ballot_request,
 			)
 		);
@@ -173,12 +199,13 @@ function np_sample_ballot() {
 		$bp_ballot_data = json_decode(
 			wp_remote_retrieve_body( $bp_ballot_request )
 		);
+
 	}
 
-	if ( ! $bp_ballot_data ) {
+	if ( ! $bp_ballot_data || ! $bp_ballot_data->success ) {
 		wp_send_json_error(
 			array(
-				'message' => __( "Ballotpedia sample ballot results didn't return any data.", 'newspack-electionkit' ),
+				'message' => esc_html__( "Ballotpedia sample ballot results didn't return any data.", 'newspack-electionkit' ),
 			)
 		);
 	}
@@ -390,3 +417,8 @@ function np_electionkit_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'np_electionkit_scripts' );
 
+
+
+if ( ! class_exists( 'Newspack_Electionkit_Settings' ) ) {
+	include_once dirname( __FILE__ ) . '/includes/class-newspack-electionkit-settings.php';
+}
