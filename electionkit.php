@@ -69,15 +69,29 @@ function np_sample_ballot() {
 	$election_date              = '2020-11-03';
 	$google_api_key             = get_option( 'newspack_electionkit_google_api_key', $google_maps_api_url_legacy );
 	$google_maps_api_url        = 'https://maps.googleapis.com/maps/api/geocode/json';
-	$bp_sample_ballot_elections = 'https://api4.ballotpedia.org/sample_ballot_elections';
+	$bp_sample_ballot_elections = 'https://api4.ballotpedia.org/myvote_elections';
 	$bp_sample_ballot_results   = 'https://api4.ballotpedia.org/myvote_results';
 	$response                   = array();
 	$ballot_measures_on_top     = false;
+	$ballotpedia_api_key        = get_option( 'newspack_electionkit_ballotpedia_api_key', false );
+	$bp_request_headers         = array(
+		'headers' => array(
+			'x-api-key' => $ballotpedia_api_key,
+		),
+	);
 
 	if ( ! $google_api_key ) {
 		wp_send_json_error(
 			array(
-				'message' => esc_html__( 'No Google API key. Please add to wp-config file as described in plugin README.', 'newspack-electionkit' ),
+				'message' => esc_html__( 'No Google API key. Please add to Settings->Election Kit in wp-admin as described in plugin README.', 'newspack-electionkit' ),
+			)
+		);
+	}
+
+	if ( ! $ballotpedia_api_key ) {
+		wp_send_json_error(
+			array(
+				'message' => esc_html__( 'No Ballotpedia API key. Please add to Settings->Election Kit in wp-admin as described in plugin README.', 'newspack-electionkit' ),
 			)
 		);
 	}
@@ -136,7 +150,7 @@ function np_sample_ballot() {
 		)
 	);
 
-	$bp_districts_request = wp_safe_remote_get( $bp_compose_url );
+	$bp_districts_request = wp_safe_remote_get( $bp_compose_url, $bp_request_headers );
 	$bp_district_data     = '';
 	$bp_district_array    = array();
 
@@ -152,7 +166,7 @@ function np_sample_ballot() {
 		);
 	}
 
-	if ( ! $bp_district_data ) {
+	if ( ! $bp_district_data || ! $bp_district_data->success ) {
 		wp_send_json_error(
 			array(
 				'message' => esc_html__( "Ballotpedia sample ballot elections didn't return any data.", 'newspack-electionkit' ),
@@ -171,7 +185,7 @@ function np_sample_ballot() {
 		)
 	);
 
-	$bp_ballot_request = wp_safe_remote_get( $bp_compose_url );
+	$bp_ballot_request = wp_safe_remote_get( $bp_compose_url, $bp_request_headers );
 	$bp_ballot_data    = '';
 
 	if ( is_wp_error( $bp_ballot_request ) ) {
@@ -185,9 +199,10 @@ function np_sample_ballot() {
 		$bp_ballot_data = json_decode(
 			wp_remote_retrieve_body( $bp_ballot_request )
 		);
+
 	}
 
-	if ( ! $bp_ballot_data ) {
+	if ( ! $bp_ballot_data || ! $bp_ballot_data->success ) {
 		wp_send_json_error(
 			array(
 				'message' => esc_html__( "Ballotpedia sample ballot results didn't return any data.", 'newspack-electionkit' ),
