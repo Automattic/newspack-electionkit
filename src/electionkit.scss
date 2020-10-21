@@ -1,3 +1,16 @@
+.newspack-electionkit {
+	.candidate-content {
+		.candidate-summary {
+			p {
+				margin-top: 0;
+				&:last-of-type {
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+}
+
 /* Search form */
 .newspack-electionkit .address-form {
 	background: #eee;
@@ -90,7 +103,7 @@
 .candidate-content {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	//justify-content: center;
 }
 
 .newspack-electionkit .candidate-name {

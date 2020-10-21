@@ -65,15 +65,15 @@ class Newspack_Electionkit_Settings {
 	 * Register and add settings
 	 */
 	public static function page_init() {
-		register_setting(
-			'newspack_electionkit_options_group',
-			'newspack_electionkit_google_api_key'
-		);
 		add_settings_section(
 			'newspack_electionkit_settings',
 			__( 'API Keys', 'newspack-electionkit' ),
 			null,
 			'newspack-electionkit-settings-admin'
+		);
+		register_setting(
+			'newspack_electionkit_options_group',
+			'newspack_electionkit_google_api_key'
 		);
 		add_settings_field(
 			'newspack_electionkit_google_api_key',
@@ -95,10 +95,30 @@ class Newspack_Electionkit_Settings {
 			'newspack-electionkit-settings-admin',
 			'newspack_electionkit_settings'
 		);
+
+		add_settings_section(
+			'newspack_electionkit_profile_settings',
+			__( 'Profiles', 'newspack-electionkit' ),
+			null,
+			'newspack-electionkit-settings-admin'
+		);
+
+		register_setting(
+			'newspack_electionkit_options_group',
+			'newspack_electionkit_region_filter'
+		);
+
+		add_settings_field(
+			'newspack_electionkit_region_filter',
+			__( 'Import Profiles', 'newspack-electionkit' ),
+			array( __CLASS__, 'newspack_electionkit_region_filter_callback' ),
+			'newspack-electionkit-settings-admin',
+			'newspack_electionkit_profile_settings'
+		);
 	}
 
 	/**
-	 * Render Debug checkbox.
+	 * Render Google API textbox.
 	 */
 	public static function newspack_electionkit_google_api_key_callback() {
 		$newspack_electionkit_google_api_key = get_option( 'newspack_electionkit_google_api_key', false );
@@ -110,7 +130,7 @@ class Newspack_Electionkit_Settings {
 	}
 
 	/**
-	 * Render Ballotpedia Debug Checkbox.
+	 * Render Ballotpedia textbox.
 	 */
 	public static function newspack_electionkit_ballotpedia_api_key_callback() {
 		$newspack_electionkit_ballotpedia_api_key = get_option( 'newspack_electionkit_ballotpedia_api_key', false );
@@ -118,6 +138,18 @@ class Newspack_Electionkit_Settings {
 			'<input type="text" id="newspack_electionkit_ballotpedia_api_key" name="newspack_electionkit_ballotpedia_api_key" aria-describedby="newspack_electionkit_ballotpedia_api_key-description" value="%s" class="regular-text"/><p class="description" id="newspack_electionkit_ballotpedia_api_key-description">%s</p>',
 			esc_attr( $newspack_electionkit_ballotpedia_api_key ),
 			esc_html( 'This plugin requires a valid Ballotpedia API key. Please contact your Technical Account manager at Newspack for access.' )
+		);
+	}
+
+	/**
+	 * Render Region Filter textbox.
+	 */
+	public static function newspack_electionkit_region_filter_callback() {
+		$newspack_electionkit_region_filter = get_option( 'newspack_electionkit_region_filter', false );
+		printf(
+			'<input type="text" id="newspack_electionkit_region_filter" name="newspack_electionkit_region_filter" aria-describedby="newspack_electionkit_region_filter-description" value="%s" class="regular-text"/><p class="description" id="newspack_electionkit_region_filter-description">%s</p>',
+			esc_attr( $newspack_electionkit_region_filter ),
+			esc_html( 'Add the two letter designation for the state (e.g. IL for Illinois) to import profiles from that state.  Only one state is allowed to be imported.' )
 		);
 	}
 
