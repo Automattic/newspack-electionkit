@@ -21,7 +21,7 @@ define( 'EK_PLUGIN_DIR', plugin_dir_url( __FILE__ ) );
  *
  * @return string sample ballot input box
  */
-function np_sample_ballot_form( array $atts ) {
+function np_sample_ballot_form( $atts ) {
 	$a = shortcode_atts(
 		array(
 			'show_bios'      => 'false',
