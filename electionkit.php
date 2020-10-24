@@ -12,6 +12,8 @@
  * @version 1.0.0
  */
 
+use function Newspack\np_sample_ballot_candidates;
+
 define( 'EK_PLUGIN_DIR', plugin_dir_url( __FILE__ ) );
 
 /**
