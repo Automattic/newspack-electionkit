@@ -55,6 +55,24 @@ class Newspack_Electionkit_Settings {
 				settings_fields( 'newspack_electionkit_options_group' );
 				do_settings_sections( 'newspack-electionkit-settings-admin' );
 				submit_button();
+				printf(
+					wp_kses(
+						/* translators: %2$s: Set Up Wizard, %4$s: Components Demo */
+						'<p><a href="%1$s">%2$s</a> | <a href="%3$s">%4$s</a> | <a href="%5$s">%6$s</a></p>',
+						array(
+							'p' => array(),
+							'a' => array(
+								'href' => array(),
+							),
+						)
+					),
+					esc_url( admin_url( 'edit.php?post_type=ek_person' ) ),
+					esc_attr( __( 'Profiles', 'newspack' ) ),
+					esc_url( admin_url( 'edit-tags.php?taxonomy=ek_district&post_type=ek_person' ) ),
+					esc_attr( __( 'Districts', 'newspack' ) ),
+					esc_url( admin_url( 'edit-tags.php?taxonomy=ek_race&post_type=ek_person' ) ),
+					esc_attr( __( 'Races', 'newspack' ) )
+				);
 			?>
 			</form>
 		</div>
