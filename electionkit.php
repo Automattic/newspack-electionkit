@@ -417,7 +417,134 @@ function np_electionkit_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'np_electionkit_scripts' );
 
+/**
+ * Adding candidate custom post type
+ */
+function np_candidate_cpt_setup() {
 
+	$labels = array(
+		'name'                  => _x( 'ElectionKit Profiles', 'Post Type General Name', 'newspack-electionkit' ),
+		'singular_name'         => _x( 'ElectionKit Profile', 'Post Type Singular Name', 'newspack-electionkit' ),
+		'menu_name'             => __( 'ElectionKit Profiles', 'newspack-electionkit' ),
+		'name_admin_bar'        => __( 'ElectionKit Profile', 'newspack-electionkit' ),
+		'archives'              => __( 'Profile Archives', 'newspack-electionkit' ),
+		'attributes'            => __( 'Profile Attributes', 'newspack-electionkit' ),
+		'parent_item_colon'     => __( 'Parent Profile:', 'newspack-electionkit' ),
+		'all_items'             => __( 'All Profiles', 'newspack-electionkit' ),
+		'add_new_item'          => __( 'Add New Profile', 'newspack-electionkit' ),
+		'add_new'               => __( 'Add New', 'newspack-electionkit' ),
+		'new_item'              => __( 'New Profile', 'newspack-electionkit' ),
+		'edit_item'             => __( 'Edit Profile', 'newspack-electionkit' ),
+		'update_item'           => __( 'Update Profile', 'newspack-electionkit' ),
+		'view_item'             => __( 'View Profile', 'newspack-electionkit' ),
+		'view_items'            => __( 'View Profiles', 'newspack-electionkit' ),
+		'search_items'          => __( 'Search Profiles', 'newspack-electionkit' ),
+		'not_found'             => __( 'Not found', 'newspack-electionkit' ),
+		'not_found_in_trash'    => __( 'Not found in Trash', 'newspack-electionkit' ),
+		'featured_image'        => __( 'Profile Image', 'newspack-electionkit' ),
+		'set_featured_image'    => __( 'Set profile image', 'newspack-electionkit' ),
+		'remove_featured_image' => __( 'Remove profile image', 'newspack-electionkit' ),
+		'use_featured_image'    => __( 'Use as profile image', 'newspack-electionkit' ),
+		'insert_into_item'      => __( 'Insert into profile', 'newspack-electionkit' ),
+		'uploaded_to_this_item' => __( 'Uploaded to this profile', 'newspack-electionkit' ),
+		'items_list'            => __( 'Profiles list', 'newspack-electionkit' ),
+		'items_list_navigation' => __( 'Profiles list navigation', 'newspack-electionkit' ),
+		'filter_items_list'     => __( 'Filter profiles list', 'newspack-electionkit' ),
+	);
+	$args   = array(
+		'label'               => __( 'ElectionKit Profile', 'newspack-electionkit' ),
+		'description'         => __( 'Profiles for candidates, judges and politicians', 'newspack-electionkit' ),
+		'labels'              => $labels,
+		'supports'            => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
+		'taxonomies'          => array(),
+		'hierarchical'        => false,
+		'public'              => false,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'menu_position'       => 25,
+		'show_in_admin_bar'   => true,
+		'show_in_nav_menus'   => false,
+		'can_export'          => true,
+		'has_archive'         => false,
+		'exclude_from_search' => true,
+		'publicly_queryable'  => false,
+		'capability_type'     => 'post',
+	);
+	register_post_type( 'ek_person', $args );
+
+	$district_labels = array(
+		'name'                       => _x( 'Districts', 'Taxonomy General Name', 'newspack-electionkit' ),
+		'singular_name'              => _x( 'District', 'Taxonomy Singular Name', 'newspack-electionkit' ),
+		'menu_name'                  => __( 'Districts', 'newspack-electionkit' ),
+		'all_items'                  => __( 'All Districts', 'newspack-electionkit' ),
+		'parent_item'                => __( 'Parent District', 'newspack-electionkit' ),
+		'parent_item_colon'          => __( 'Parent District:', 'newspack-electionkit' ),
+		'new_item_name'              => __( 'New District Name', 'newspack-electionkit' ),
+		'add_new_item'               => __( 'Add New District', 'newspack-electionkit' ),
+		'edit_item'                  => __( 'Edit District', 'newspack-electionkit' ),
+		'update_item'                => __( 'Update District', 'newspack-electionkit' ),
+		'view_item'                  => __( 'View District', 'newspack-electionkit' ),
+		'separate_items_with_commas' => __( 'Separate districts with commas', 'newspack-electionkit' ),
+		'add_or_remove_items'        => __( 'Add or remove districts', 'newspack-electionkit' ),
+		'choose_from_most_used'      => __( 'Choose from the most used', 'newspack-electionkit' ),
+		'popular_items'              => __( 'Popular Districts', 'newspack-electionkit' ),
+		'search_items'               => __( 'Search Districts', 'newspack-electionkit' ),
+		'not_found'                  => __( 'Not Found', 'newspack-electionkit' ),
+		'no_terms'                   => __( 'No districts', 'newspack-electionkit' ),
+		'items_list'                 => __( 'Districts list', 'newspack-electionkit' ),
+		'items_list_navigation'      => __( 'Districts list navigation', 'newspack-electionkit' ),
+	);
+
+	$district_args = array(
+		'labels'            => $district_labels,
+		'hierarchical'      => true,
+		'public'            => true,
+		'show_ui'           => true,
+		'show_admin_column' => true,
+		'show_in_nav_menus' => true,
+		'show_tagcloud'     => false,
+		'rewrite'           => false,
+	);
+	register_taxonomy( 'ek_district', array( 'ek_person' ), $district_args );
+
+	$race_labels = array(
+		'name'                       => _x( 'Races', 'Taxonomy General Name', 'newspack-electionkit' ),
+		'singular_name'              => _x( 'Race', 'Taxonomy Singular Name', 'newspack-electionkit' ),
+		'menu_name'                  => __( 'Races', 'newspack-electionkit' ),
+		'all_items'                  => __( 'All Races', 'newspack-electionkit' ),
+		'parent_item'                => __( 'Parent Race', 'newspack-electionkit' ),
+		'parent_item_colon'          => __( 'Parent Race:', 'newspack-electionkit' ),
+		'new_item_name'              => __( 'New Race Name', 'newspack-electionkit' ),
+		'add_new_item'               => __( 'Add New Race', 'newspack-electionkit' ),
+		'edit_item'                  => __( 'Edit Race', 'newspack-electionkit' ),
+		'update_item'                => __( 'Update Race', 'newspack-electionkit' ),
+		'view_item'                  => __( 'View Race', 'newspack-electionkit' ),
+		'separate_items_with_commas' => __( 'Separate races with commas', 'newspack-electionkit' ),
+		'add_or_remove_items'        => __( 'Add or remove races', 'newspack-electionkit' ),
+		'choose_from_most_used'      => __( 'Choose from the most used', 'newspack-electionkit' ),
+		'popular_items'              => __( 'Popular Races', 'newspack-electionkit' ),
+		'search_items'               => __( 'Search Races', 'newspack-electionkit' ),
+		'not_found'                  => __( 'Not Found', 'newspack-electionkit' ),
+		'no_terms'                   => __( 'No races', 'newspack-electionkit' ),
+		'items_list'                 => __( 'Races list', 'newspack-electionkit' ),
+		'items_list_navigation'      => __( 'Races list navigation', 'newspack-electionkit' ),
+	);
+	$race_args   = array(
+		'labels'            => $race_labels,
+		'hierarchical'      => false,
+		'public'            => false,
+		'show_ui'           => true,
+		'show_admin_column' => true,
+		'show_in_nav_menus' => true,
+		'show_tagcloud'     => true,
+		'rewrite'           => false,
+	);
+	register_taxonomy( 'ek_race', array( 'ek_person' ), $race_args );
+
+}
+add_action( 'init', 'np_candidate_cpt_setup', 0 );
+
+require_once dirname( __FILE__ ) . '/includes/profiles.php';
 
 if ( ! class_exists( 'Newspack_Electionkit_Settings' ) ) {
 	include_once dirname( __FILE__ ) . '/includes/class-newspack-electionkit-settings.php';
