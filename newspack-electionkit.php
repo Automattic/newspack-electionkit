@@ -445,6 +445,7 @@ function np_candidate_cpt_setup() {
 		'public'              => false,
 		'show_ui'             => true,
 		'show_in_menu'        => false,
+		'show_in_rest'        => true,
 		'menu_position'       => 25,
 		'show_in_admin_bar'   => true,
 		'show_in_nav_menus'   => false,
@@ -525,8 +526,47 @@ function np_candidate_cpt_setup() {
 	);
 	register_taxonomy( 'ek_race', array( 'ek_person' ), $race_args );
 
+	register_meta(
+		'post',
+		'political_party',
+		[
+			'object_subtype' => 'ek_person',
+			'show_in_rest'   => true,
+			'type'           => 'string',
+			'single'         => true,
+			'auth_callback'  => '__return_true',
+		]
+	);
+
+	register_meta(
+		'post',
+		'telephone_number',
+		[
+			'object_subtype' => 'ek_person',
+			'show_in_rest'   => true,
+			'type'           => 'string',
+			'single'         => true,
+			'auth_callback'  => '__return_true',
+		]
+	);
+
 }
 add_action( 'init', 'np_candidate_cpt_setup', 0 );
+
+/**
+ * Enqueue editor script.
+ */
+function npek_enqueue_block_editor_assets() {
+	wp_enqueue_script(
+		'newspack-electionkit',
+		plugins_url( 'dist/editor.js', __FILE__ ),
+		[ 'wp-components' ],
+		filemtime( dirname( __FILE__ ) . '/dist/editor.js' ),
+		true
+	);
+}
+
+add_action( 'enqueue_block_editor_assets', 'npek_enqueue_block_editor_assets' );
 
 /**
  * Enqueue scripts.

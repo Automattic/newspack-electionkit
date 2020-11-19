@@ -13,13 +13,14 @@ const path = require( 'path' );
  * Internal variables
  */
 const electionkit = path.join( __dirname, 'src', 'electionkit' );
+const editor = path.join( __dirname, 'src', 'editor' );
 
 const webpackConfig = getBaseWebpackConfig(
-	{ WP: true },
-	{
-		entry: { electionkit },
-		'output-path': path.join( __dirname, 'dist' ),
-	}
+  { WP: true },
+  {
+    entry: { electionkit, editor },
+    'output-path': path.join( __dirname, 'dist' ),
+  }
 );
 
 module.exports = webpackConfig;
