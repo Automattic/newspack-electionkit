@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/Automattic/newspack-electionkit/compare/v1.1.0...v1.2.0) (2020-11-19)
+
+
+### Features
+
+* adding ElectionKit profile custom post type and taxonomy ([#23](https://github.com/Automattic/newspack-electionkit/issues/23)) ([cfb1922](https://github.com/Automattic/newspack-electionkit/commit/cfb19224659d18b0c5b0660b6babff3ac4ad4d63))
+
 # [1.1.0](https://github.com/Automattic/newspack-electionkit/compare/v1.0.0...v1.1.0) (2020-10-15)
 
 
