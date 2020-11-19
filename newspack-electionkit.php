@@ -9,7 +9,7 @@
  * Text Domain: newspack-electionkit
  *
  * @package Newspack Election Kit
- * @version 1.0.0
+ * @version 0.0.0
  */
 
 /**
